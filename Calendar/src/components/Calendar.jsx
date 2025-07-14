@@ -63,9 +63,9 @@ const Calendar = () => {
           return (
             <div
               key={idx}
-              className={`day-box cursor-pointer ${isToday ? "today" : ""} ${
+              className={`day-box ${isToday ? "today" : ""} ${
                 !isCurrentMonth ? "text-gray-400" : ""
-              } ${hasNote ? "border border-blue-400" : ""}`}
+              } ${hasNote ? "has-note" : ""}`}
               onClick={() => handleDayClick(day, isCurrentMonth)}
             >
               {day}
@@ -76,39 +76,19 @@ const Calendar = () => {
 
       {/* Modal */}
       {selectedDate && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20%",
-            left: "50%",
-            transform: "translate(-50%, -20%)",
-            backgroundColor: "white",
-            padding: "20px",
-            borderRadius: "8px",
-            boxShadow: "0 0 10px rgba(0,0,0,0.2)",
-            zIndex: 1000,
-            width: "300px",
-          }}
-        >
-          <h3 className="mb-2 font-bold">Add Note for {selectedDate}</h3>
+        <div className="modal">
+          <h3>Add Note for {selectedDate}</h3>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows="4"
-            className="w-full border p-2 mb-2"
             placeholder="What do you have planned?"
           />
-          <div className="flex justify-between">
-            <button
-              className="bg-blue-500 text-white px-3 py-1 rounded"
-              onClick={handleSaveNote}
-            >
+          <div className="buttons">
+            <button className="save" onClick={handleSaveNote}>
               Save
             </button>
-            <button
-              className="bg-gray-300 text-black px-3 py-1 rounded"
-              onClick={() => setSelectedDate(null)}
-            >
+            <button className="cancel" onClick={() => setSelectedDate(null)}>
               Cancel
             </button>
           </div>
