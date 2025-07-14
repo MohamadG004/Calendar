@@ -1,17 +1,19 @@
-import React from "react";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Calendar from "./components/Calendar";
+import React from 'react';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Calendar from './components/Calendar';
 import './App.css';
 
-const App = () => (
-  <div className="flex flex-col min-h-screen">
-    <Header />
-    <main className="flex-grow">
-      <Calendar />
-    </main>
-    <Footer />
-  </div>
-);
+const App = () => {
+  return (
+    <div className="app-container" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <Header />
+      <main style={{ flex: 1 }}>
+        <Calendar />
+      </main>
+      <Footer />
+    </div>
+  );
+};
 
 export default App;

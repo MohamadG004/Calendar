@@ -23,11 +23,12 @@ footer {
 }
 
 main {
-  padding: 20px;
+  padding: 2px;
 }
 
 .calendar {
-  max-width: 600px;
+  max-width: 1500px;
+  max-height: 600px;
   margin: 0 auto;
 }
 
@@ -36,8 +37,7 @@ main {
   margin-bottom: 20px;
 }
 
-.weekdays,
-.days {
+.days, .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
@@ -48,10 +48,19 @@ main {
   background-color: #f1f3f5;
   padding: 12px;
   border-radius: 6px;
+  min-height: 75px;
 }
 
 .today {
-  background-color: #007bff;
+  background-color: #3c9aff;
   color: white;
   font-weight: bold;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
