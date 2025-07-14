@@ -18,27 +18,23 @@ const Calendar = () => {
   }
 
   return (
-    <div className="p-4 grid gap-2">
-      <h2 className="text-center text-2xl font-semibold mb-4">
-        {today.format("MMMM YYYY")}
-      </h2>
-      <div className="grid grid-cols-7 gap-2 text-center font-semibold">
+    <div className="calendar">
+    <h2>{today.format("MMMM YYYY")}</h2>
+    <div className="weekdays">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-          <div key={d}>{d}</div>
+            <div key={d}>{d}</div>
         ))}
-      </div>
-      <div className="grid grid-cols-7 gap-2">
-        {days.map((day, idx) => (
-          <div
-            key={idx}
-            className={`h-12 flex items-center justify-center rounded ${
-              day === today.date() ? "bg-blue-500 text-white font-bold" : "bg-gray-100"
-            }`}
-          >
-            {day || ""}
-          </div>
-        ))}
-      </div>
+        </div>
+        <div className="days">
+            {days.map((day, idx) => (
+                <div
+                    key={idx}
+                    className={`day-box ${day === today.date() ? "today" : ""}`}
+                >
+                {day || ""}
+            </div>
+            ))}
+        </div>
     </div>
   );
 };
