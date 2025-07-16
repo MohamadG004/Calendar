@@ -131,3 +131,14 @@ html, body, #root {
   background-color: #ccc;
   color: black;
 }
+
+.note-preview {
+  margin-top: 4px;
+  font-size: 14px;
+  color: black;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: #7381ff;
+  border-radius: 5px;
+}
