@@ -6,30 +6,28 @@ const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [newEvent, setNewEvent] = useState("");
   const [eventsMap, setEventsMap] = useState({});
-  const [editing, setEditing] = useState({ id: null, text: "" });
+
+  // For editing event modal
+  const [editingEvent, setEditingEvent] = useState(null); // { id, text, dateKey } or null
 
   const startOfMonth = currentDate.startOf("month");
   const daysInMonth = currentDate.daysInMonth();
   const startDay = startOfMonth.day();
 
   const previousMonth = currentDate.subtract(1, "month");
-  const daysInPrevMonth = previousMonth.daysInMonth();
-
   const nextMonth = currentDate.add(1, "month");
+  const daysInPrevMonth = previousMonth.daysInMonth();
 
   const days = [];
 
-  // Fill in days from previous month
   for (let i = startDay - 1; i >= 0; i--) {
-    const dateObj = previousMonth.date(daysInPrevMonth - i);
     days.push({
       day: daysInPrevMonth - i,
       isCurrentMonth: false,
-      dateObj,
+      dateObj: previousMonth.date(daysInPrevMonth - i),
     });
   }
 
-  // Fill in days of current month
   for (let i = 1; i <= daysInMonth; i++) {
     days.push({
       day: i,
@@ -38,10 +36,8 @@ const Calendar = () => {
     });
   }
 
-  // Fill in next month's starting days to complete the grid
-  const totalCells = 42; // 6 weeks * 7 days
-  const remainingCells = totalCells - days.length;
-  for (let i = 1; i <= remainingCells; i++) {
+  const remainingDays = 42 - days.length;
+  for (let i = 1; i <= remainingDays; i++) {
     days.push({
       day: i,
       isCurrentMonth: false,
@@ -53,7 +49,7 @@ const Calendar = () => {
     const dateStr = dateObj.format("YYYY-MM-DD");
     setSelectedDate(dateStr);
     setNewEvent("");
-    setEditing({ id: null, text: "" });
+    setEditingEvent(null);
   };
 
   const handleSaveEvent = () => {
@@ -65,27 +61,36 @@ const Calendar = () => {
       [selectedDate]: [...(prev[selectedDate] || []), event],
     }));
     setNewEvent("");
+    setSelectedDate(null); // <-- Close the add event modal here
   };
 
-  const handleDeleteEvent = (dateKey, id) => {
+  const openEditModal = (dateKey, event) => {
+    setEditingEvent({ ...event, dateKey });
+  };
+
+  const handleEditChange = (text) => {
+    setEditingEvent((prev) => ({ ...prev, text }));
+  };
+
+  const handleEditConfirm = () => {
+    if (!editingEvent.text.trim()) return;
     setEventsMap((prev) => ({
       ...prev,
-      [dateKey]: prev[dateKey].filter((e) => e.id !== id),
-    }));
-  };
-
-  const handleEditStart = (id, text) => {
-    setEditing({ id, text });
-  };
-
-  const handleEditConfirm = (dateKey) => {
-    setEventsMap((prev) => ({
-      ...prev,
-      [dateKey]: prev[dateKey].map((e) =>
-        e.id === editing.id ? { ...e, text: editing.text } : e
+      [editingEvent.dateKey]: prev[editingEvent.dateKey].map((e) =>
+        e.id === editingEvent.id ? { ...e, text: editingEvent.text } : e
       ),
     }));
-    setEditing({ id: null, text: "" });
+    setEditingEvent(null);
+  };
+
+  const handleDeleteEvent = () => {
+    setEventsMap((prev) => ({
+      ...prev,
+      [editingEvent.dateKey]: prev[editingEvent.dateKey].filter(
+        (e) => e.id !== editingEvent.id
+      ),
+    }));
+    setEditingEvent(null);
   };
 
   return (
@@ -126,54 +131,16 @@ const Calendar = () => {
             >
               <div>{day}</div>
               {events.map((event) => (
-                <div key={event.id} className="note-preview">
-                  {editing.id === event.id ? (
-                    <>
-                      <input
-                        value={editing.text}
-                        onChange={(e) =>
-                          setEditing({ ...editing, text: e.target.value })
-                        }
-                        style={{
-                          width: "80%",
-                          fontSize: "12px",
-                          borderRadius: "4px",
-                          marginBottom: "2px",
-                        }}
-                      />
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditConfirm(dateKey);
-                        }}
-                        style={{ fontSize: "10px" }}
-                      >
-                        ✔
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      {event.text}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditStart(event.id, event.text);
-                        }}
-                        style={{ marginLeft: 5, fontSize: "10px" }}
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteEvent(dateKey, event.id);
-                        }}
-                        style={{ marginLeft: 3, fontSize: "10px" }}
-                      >
-                        ❌
-                      </button>
-                    </>
-                  )}
+                <div
+                  key={event.id}
+                  className="note-preview"
+                  onClick={(e) => {
+                    e.stopPropagation(); // prevent day click
+                    openEditModal(dateKey, event);
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  {event.text}
                 </div>
               ))}
             </div>
@@ -181,7 +148,8 @@ const Calendar = () => {
         })}
       </div>
 
-      {selectedDate && (
+      {/* Add Event Modal */}
+      {selectedDate && !editingEvent && (
         <div className="modal">
           <h3>Events for {selectedDate}</h3>
           <textarea
@@ -196,6 +164,33 @@ const Calendar = () => {
             </button>
             <button className="cancel" onClick={() => setSelectedDate(null)}>
               Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Event Modal */}
+      {editingEvent && (
+        <div className="modal">
+          <h3>Edit Event</h3>
+          <textarea
+            value={editingEvent.text}
+            onChange={(e) => handleEditChange(e.target.value)}
+            rows="3"
+          />
+          <div className="buttons">
+            <button className="save" onClick={handleEditConfirm}>
+              Save
+            </button>
+            <button className="cancel" onClick={() => setEditingEvent(null)}>
+              Cancel
+            </button>
+            <button
+              className="delete"
+              style={{ backgroundColor: "#dc3545", color: "white" }}
+              onClick={handleDeleteEvent}
+            >
+              Delete
             </button>
           </div>
         </div>
