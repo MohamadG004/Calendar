@@ -1,7 +1,6 @@
-/* App.css */
 body {
   margin: 0;
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f6f8fa;
 }
 
@@ -12,13 +11,12 @@ header {
   text-align: center;
   font-size: 24px;
   font-weight: bold;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 footer {
   background-color: #e2e6ea;
   color: #333;
-  padding: 10px;
+  padding: 12px;
   text-align: center;
   font-size: 14px;
 }
@@ -35,10 +33,24 @@ main {
 
 .calendar h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
-.days, .weekdays {
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.weekday-box {
+  padding: 2px;
+  font-weight: bold;
+  cursor: default;
+}
+
+.days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
@@ -50,25 +62,18 @@ main {
   padding: 12px;
   border-radius: 6px;
   min-height: 72px;
+  transition: background-color 0.2s ease;
+}
+
+.day-box:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
 }
 
 .today {
   background-color: #3c9aff;
   color: white;
   font-weight: bold;
-}
-
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.day-box:hover {
-  background-color: #e9ecef;
-  cursor: pointer;
 }
 
 .today:hover {

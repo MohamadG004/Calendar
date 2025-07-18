@@ -17,7 +17,6 @@ const Calendar = () => {
 
   const days = [];
 
-  // Fill in empty boxes for previous month
   for (let i = startDay - 1; i >= 0; i--) {
     days.push({
       day: daysInPrevMonth - i,
@@ -26,7 +25,6 @@ const Calendar = () => {
     });
   }
 
-  // Fill in days of current month
   for (let i = 1; i <= daysInMonth; i++) {
     days.push({
       day: i,
@@ -81,7 +79,7 @@ const Calendar = () => {
 
       <div className="weekdays">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-          <div key={d} className="day-box" style={{ fontWeight: "bold" }}>
+          <div key={d} className="weekday-box">
             {d}
           </div>
         ))}
