@@ -152,21 +152,50 @@ main {
 .modal .buttons .save {
   background-color: #007bff;
   color: white;
+  transition: background-color 0.15s ease;
+}
+
+.modal .buttons .save:hover {
+  background-color: #0056b3;
 }
 
 .modal .buttons .cancel {
   background-color: #ccc;
   color: black;
+  transition: background-color 0.15s ease;
+}
+
+.modal .buttons .cancel:hover {
+  background-color: #aaa;
+}
+
+.modal .buttons .delete {
+  background-color: #dc3545;
+  color: white;
+  transition: background-color 0.15s ease;
+}
+
+.modal .buttons .delete:hover {
+  background-color: #c82333;
 }
 
 .note-preview {
   margin-top: 4px;
   font-size: 14px;
-  color: black;
+  color: white;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  background-color: #7381ff;
+  background-color: #5a67d8;
   border-radius: 5px;
-  padding: 2px 4px;
+  padding: 4px 6px;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
 }
+
+.note-preview:hover {
+  background-color: #434190;
+}
+

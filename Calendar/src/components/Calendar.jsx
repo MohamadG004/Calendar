@@ -127,7 +127,6 @@ const Calendar = () => {
                 events.length ? "has-note" : ""
               }`}
               onClick={() => handleDayClick(dateObj)}
-              style={{ color: isCurrentMonth ? "inherit" : "#ccc" }}
             >
               <div>{day}</div>
               {events.map((event) => (
@@ -151,7 +150,7 @@ const Calendar = () => {
       {/* Add Event Modal */}
       {selectedDate && !editingEvent && (
         <div className="modal">
-          <h3>Events for {selectedDate}</h3>
+          <h3>Add Event for {selectedDate}</h3>
           <textarea
             value={newEvent}
             onChange={(e) => setNewEvent(e.target.value)}
@@ -172,7 +171,7 @@ const Calendar = () => {
       {/* Edit Event Modal */}
       {editingEvent && (
         <div className="modal">
-          <h3>Edit Event</h3>
+          <h3>Edit Event for {selectedDate}</h3>
           <textarea
             value={editingEvent.text}
             onChange={(e) => handleEditChange(e.target.value)}
@@ -187,7 +186,6 @@ const Calendar = () => {
             </button>
             <button
               className="delete"
-              style={{ backgroundColor: "#dc3545", color: "white" }}
               onClick={handleDeleteEvent}
             >
               Delete
