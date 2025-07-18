@@ -15,16 +15,21 @@ const Calendar = () => {
   const previousMonth = currentDate.subtract(1, "month");
   const daysInPrevMonth = previousMonth.daysInMonth();
 
+  const nextMonth = currentDate.add(1, "month");
+
   const days = [];
 
+  // Fill in days from previous month
   for (let i = startDay - 1; i >= 0; i--) {
+    const dateObj = previousMonth.date(daysInPrevMonth - i);
     days.push({
       day: daysInPrevMonth - i,
       isCurrentMonth: false,
-      dateObj: previousMonth.date(daysInPrevMonth - i),
+      dateObj,
     });
   }
 
+  // Fill in days of current month
   for (let i = 1; i <= daysInMonth; i++) {
     days.push({
       day: i,
@@ -33,8 +38,18 @@ const Calendar = () => {
     });
   }
 
-  const handleDayClick = (dateObj, isCurrentMonth) => {
-    if (!isCurrentMonth) return;
+  // Fill in next month's starting days to complete the grid
+  const totalCells = 42; // 6 weeks * 7 days
+  const remainingCells = totalCells - days.length;
+  for (let i = 1; i <= remainingCells; i++) {
+    days.push({
+      day: i,
+      isCurrentMonth: false,
+      dateObj: nextMonth.date(i),
+    });
+  }
+
+  const handleDayClick = (dateObj) => {
     const dateStr = dateObj.format("YYYY-MM-DD");
     setSelectedDate(dateStr);
     setNewEvent("");
@@ -106,7 +121,7 @@ const Calendar = () => {
               className={`day-box ${isToday ? "today" : ""} ${
                 events.length ? "has-note" : ""
               }`}
-              onClick={() => handleDayClick(dateObj, isCurrentMonth)}
+              onClick={() => handleDayClick(dateObj)}
               style={{ color: isCurrentMonth ? "inherit" : "#ccc" }}
             >
               <div>{day}</div>
