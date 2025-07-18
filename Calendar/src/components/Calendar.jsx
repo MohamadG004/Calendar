@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import dayjs from "dayjs";
 
 const Calendar = () => {
-  const today = dayjs();
-  const startOfMonth = today.startOf("month");
-  const daysInMonth = today.daysInMonth();
-  const startDay = startOfMonth.day();
-
-  const previousMonth = today.subtract(1, "month");
-  const daysInPrevMonth = previousMonth.daysInMonth();
-
+  const [currentDate, setCurrentDate] = useState(dayjs());
   const [selectedDate, setSelectedDate] = useState(null);
   const [newEvent, setNewEvent] = useState("");
   const [eventsMap, setEventsMap] = useState({});
   const [editing, setEditing] = useState({ id: null, text: "" });
+
+  const startOfMonth = currentDate.startOf("month");
+  const daysInMonth = currentDate.daysInMonth();
+  const startDay = startOfMonth.day();
+
+  const previousMonth = currentDate.subtract(1, "month");
+  const daysInPrevMonth = previousMonth.daysInMonth();
 
   const days = [];
 
@@ -29,7 +29,7 @@ const Calendar = () => {
     days.push({
       day: i,
       isCurrentMonth: true,
-      dateObj: today.date(i),
+      dateObj: currentDate.date(i),
     });
   }
 
@@ -75,7 +75,15 @@ const Calendar = () => {
 
   return (
     <div className="calendar">
-      <h2>{today.format("MMMM YYYY")}</h2>
+      <div className="calendar-header">
+        <button onClick={() => setCurrentDate(currentDate.subtract(1, "month"))}>
+          ←
+        </button>
+        <h2>{currentDate.format("MMMM YYYY")}</h2>
+        <button onClick={() => setCurrentDate(currentDate.add(1, "month"))}>
+          →
+        </button>
+      </div>
 
       <div className="weekdays">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
@@ -89,7 +97,7 @@ const Calendar = () => {
         {days.map((dayObj, idx) => {
           const { day, isCurrentMonth, dateObj } = dayObj;
           const dateKey = dateObj.format("YYYY-MM-DD");
-          const isToday = dateObj.isSame(today, "day");
+          const isToday = dateObj.isSame(dayjs(), "day");
           const events = eventsMap[dateKey] || [];
 
           return (
