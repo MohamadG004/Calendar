@@ -6,13 +6,14 @@ import './App.css';
 
 const App = () => {
   return (
-    <div className="app-container" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <Header />
-      <main style={{ flex: 1 }}>
-        <Calendar />
-      </main>
-      <Footer />
-    </div>
+    <>
+    <header>My Calendar App</header>
+    <main>
+      <Calendar />
+    </main>
+    <footer>© 2025 Your Name</footer>
+  </>
+
   );
 };
 
