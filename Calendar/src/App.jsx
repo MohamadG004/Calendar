@@ -7,11 +7,11 @@ import './App.css';
 const App = () => {
   return (
     <>
-    <header>My Calendar App</header>
+    <header>Calendar</header>
     <main>
       <Calendar />
     </main>
-    <footer>© 2025 Your Name</footer>
+    <footer>© 2025 Mohamad Ghattas</footer>
   </>
 
   );
