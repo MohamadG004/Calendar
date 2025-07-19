@@ -7,7 +7,7 @@ import './App.css';
 const App = () => {
   return (
     <>
-    <header>Calendar</header>
+    <header>My Calendar</header>
     <main>
       <Calendar />
     </main>
