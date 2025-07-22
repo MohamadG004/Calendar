@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import dayjs from "dayjs";
 
 const Calendar = () => {
@@ -6,9 +6,10 @@ const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [newEvent, setNewEvent] = useState("");
   const [eventsMap, setEventsMap] = useState({});
+  const [editingEvent, setEditingEvent] = useState(null);
 
-  // For editing event modal
-  const [editingEvent, setEditingEvent] = useState(null); // { id, text, dateKey } or null
+  const addEventRef = useRef(null);
+  const editEventRef = useRef(null);
 
   const startOfMonth = currentDate.startOf("month");
   const daysInMonth = currentDate.daysInMonth();
@@ -61,7 +62,7 @@ const Calendar = () => {
       [selectedDate]: [...(prev[selectedDate] || []), event],
     }));
     setNewEvent("");
-    setSelectedDate(null); // <-- Close the add event modal here
+    setSelectedDate(null);
   };
 
   const openEditModal = (dateKey, event) => {
@@ -92,6 +93,23 @@ const Calendar = () => {
     }));
     setEditingEvent(null);
   };
+
+  // Focus the Add Event textarea
+  useEffect(() => {
+    if (selectedDate && addEventRef.current) {
+      addEventRef.current.focus();
+    }
+  }, [selectedDate]);
+
+  // Focus the Edit Event textarea
+  useEffect(() => {
+    if (editingEvent && editEventRef.current) {
+      const textarea = editEventRef.current;
+      textarea.focus();
+      textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+    }
+  }, [editingEvent]);
+
 
   return (
     <div className="calendar">
@@ -134,7 +152,7 @@ const Calendar = () => {
                   key={event.id}
                   className="note-preview"
                   onClick={(e) => {
-                    e.stopPropagation(); // prevent day click
+                    e.stopPropagation();
                     openEditModal(dateKey, event);
                   }}
                   style={{ cursor: "pointer" }}
@@ -152,8 +170,15 @@ const Calendar = () => {
         <div className="modal">
           <h3>Add Event for {selectedDate}</h3>
           <textarea
+            ref={addEventRef}
             value={newEvent}
             onChange={(e) => setNewEvent(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSaveEvent();
+              }
+            }}
             rows="3"
             placeholder="Add a new event"
           />
@@ -171,10 +196,17 @@ const Calendar = () => {
       {/* Edit Event Modal */}
       {editingEvent && (
         <div className="modal">
-          <h3>Edit Event for {selectedDate}</h3>
+          <h3>Edit Event for {editingEvent.dateKey}</h3>
           <textarea
+            ref={editEventRef}
             value={editingEvent.text}
             onChange={(e) => handleEditChange(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleEditConfirm();
+              }
+            }}
             rows="3"
           />
           <div className="buttons">
@@ -184,10 +216,7 @@ const Calendar = () => {
             <button className="cancel" onClick={() => setEditingEvent(null)}>
               Cancel
             </button>
-            <button
-              className="delete"
-              onClick={handleDeleteEvent}
-            >
+            <button className="delete" onClick={handleDeleteEvent}>
               Delete
             </button>
           </div>
