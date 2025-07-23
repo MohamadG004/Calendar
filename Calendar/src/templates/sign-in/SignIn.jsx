@@ -17,6 +17,7 @@ import ForgotPassword from './components/ForgotPassword';
 import AppTheme from '../shared-themes/AppTheme';
 import ColorModeSelect from '../shared-themes/ColorModeSelect';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './components/CustomIcons';
+import Header from "../../components/Header";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -117,8 +118,9 @@ export default function SignIn(props) {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
+      <Header />
       <SignInContainer direction="column" justifyContent="space-between">
-        <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
+        <ColorModeSelect sx={{ position: 'fixed', top: '1rem', left: '1rem' }} />
         <Card variant="outlined">
           <SitemarkIcon />
           <Typography

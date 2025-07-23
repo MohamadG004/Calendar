@@ -3,15 +3,19 @@ import { Link } from "react-router-dom";
 
 const Header = () => (
   <header>
-    My Calendar
+    <div>
+      <Link to="/" className="text-white !visited:text-white no-underline" style={{ color: "white" }}>
+        My Calendar
+      </Link>
+    </div>
     <nav>
-      <Link to="/signup">
-          Sign Up
-        </Link>
-        <Link to="/signin">
-          Sign In
-        </Link>
-      </nav>
+      <Link to="/signup" className="text-white !visited:text-white no-underline" style={{ color: "white" }}>
+        Sign Up
+      </Link>
+      <Link to="/signin" className="text-white !visited:text-white no-underline" style={{ color: "white" }}>
+        Sign In
+      </Link>
+    </nav>
   </header>
 );
 
