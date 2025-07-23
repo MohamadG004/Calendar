@@ -18,6 +18,7 @@ import AppTheme from '../shared-themes/AppTheme';
 import ColorModeSelect from '../shared-themes/ColorModeSelect';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './components/CustomIcons';
 import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -221,6 +222,7 @@ export default function SignIn(props) {
           </Box>
         </Card>
       </SignInContainer>
+      <Footer />
     </AppTheme>
   );
 }
