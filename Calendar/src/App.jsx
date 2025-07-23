@@ -7,14 +7,12 @@ import './App.css';
 const App = () => {
   return (
     <>
-    <header>My Calendar</header>
-    <main>
-      <Calendar />
-    </main>
-    <footer>© 2025 Mohamad Ghattas</footer>
-  </>
-
+      <Header />
+      <main>
+        <Calendar />
+      </main>
+      <Footer />
+    </>
   );
 };
-
 export default App;
