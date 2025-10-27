@@ -5,7 +5,7 @@ const Header = () => (
   <header>
     <div>
       <Link to="/" className="text-white !visited:text-white no-underline" style={{ color: "white" }}>
-        My Calendar
+        Tempo
       </Link>
     </div>
     <nav>
