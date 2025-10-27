@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
-import './index.css'; // ✅ import Tailwind styles
+import './index.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignIn from "./templates/sign-in/SignIn";
 import SignUp from "./templates/sign-up/SignUp";
